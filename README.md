@@ -105,7 +105,6 @@ Excel Insights is a lightweight data analysis tool that lets you upload Excel (.
 excel-insights/
 ├── backend/
 │   ├── server.js           # Express server and API endpoints
-│   ├── .env                # Environment variables (PORT)
 │   ├── package.json        # Backend dependencies
 │   └── node_modules/
 ├── frontend/
@@ -118,7 +117,6 @@ excel-insights/
 │   │   ├── App.tsx         # Main application component
 │   │   ├── types.ts        # TypeScript type definitions
 │   │   └── config.ts       # API configuration
-│   ├── .env                # Environment variables (API URL)
 │   ├── package.json        # Frontend dependencies
 │   └── vite.config.ts      # Vite configuration
 ├── README.md
