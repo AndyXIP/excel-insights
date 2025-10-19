@@ -106,20 +106,15 @@ export function Charts({ data }: ChartsProps) {
 
   return (
     <div className="charts-container">
-      <h2>📊 Data Visualization</h2>
+      <h2>Data Visualization</h2>
 
       {/* Trends Section */}
       {Object.keys(analysis.trends).length > 0 && (
         <div className="trends-section">
-          <h3>🔍 Trends Detected</h3>
+          <h3>Trends Detected</h3>
           <div className="trends-grid">
             {Object.entries(analysis.trends).map(([col, trend]) => (
               <div key={col} className={`trend-card trend-${trend.direction}`}>
-                <div className="trend-icon">
-                  {trend.direction === 'increasing' && '📈'}
-                  {trend.direction === 'decreasing' && '📉'}
-                  {trend.direction === 'stable' && '➡️'}
-                </div>
                 <div className="trend-info">
                   <div className="trend-label">{col}</div>
                   <div className="trend-value">
@@ -205,21 +200,6 @@ export function Charts({ data }: ChartsProps) {
             </ResponsiveContainer>
           </div>
         )}
-      </div>
-
-      {/* Insights Section */}
-      <div className="insights-section">
-        <h3>💡 Quick Insights</h3>
-        <ul>
-          <li>Total rows: <strong>{data.rowCount}</strong></li>
-          <li>Numeric columns: <strong>{analysis.numericColumns.join(', ')}</strong></li>
-          {analysis.categoricalColumns.length > 0 && (
-            <li>Categorical columns: <strong>{analysis.categoricalColumns.join(', ')}</strong></li>
-          )}
-          {analysis.timeColumns.length > 0 && (
-            <li>Time-based columns detected: <strong>{analysis.timeColumns.join(', ')}</strong></li>
-          )}
-        </ul>
       </div>
     </div>
   );

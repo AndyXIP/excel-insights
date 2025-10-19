@@ -30,7 +30,6 @@ function App() {
           <>
             <div className="upload-success">
               <div className="success-info">
-                
                 <div>
                   <strong>{parsedData.filename}</strong>
                   <span className="file-meta"> - {parsedData.rowCount} rows, {parsedData.columns.length} columns</span>
