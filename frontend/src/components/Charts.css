@@ -1,0 +1,164 @@
+.charts-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.charts-container h2 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.charts-container h3 {
+  margin: 1.5rem 0 1rem 0;
+  color: #6C3BAA;
+  font-size: 1.4rem;
+}
+
+.charts-container h4 {
+  margin: 0 0 1rem 0;
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.no-charts-message {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+}
+
+.no-charts-message p {
+  font-size: 1.1rem;
+}
+
+/* Trends Section */
+.trends-section {
+  margin-bottom: 2rem;
+}
+
+.trends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.trend-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f9f9f9;
+  border-left: 4px solid #6C3BAA;
+  transition: transform 0.2s;
+}
+
+.trend-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 59, 170, 0.15);
+}
+
+.trend-card.trend-increasing {
+  border-left-color: #28a745;
+}
+
+.trend-card.trend-decreasing {
+  border-left-color: #dc3545;
+}
+
+.trend-card.trend-stable {
+  border-left-color: #6c757d;
+}
+
+.trend-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.trend-info {
+  flex: 1;
+}
+
+.trend-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.trend-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6C3BAA;
+}
+
+.trend-direction {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: capitalize;
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.chart-card {
+  padding: 1.5rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.chart-card h4 {
+  margin-top: 0;
+  color: #6C3BAA;
+}
+
+/* Insights Section */
+.insights-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f0e7f7;
+  border-radius: 8px;
+  border: 1px solid #d0c0e0;
+}
+
+.insights-section h3 {
+  margin-top: 0;
+}
+
+.insights-section ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #555;
+}
+
+.insights-section li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.insights-section strong {
+  color: #6C3BAA;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trends-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-container {
+    padding: 1rem;
+  }
+}

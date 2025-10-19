@@ -1,0 +1,39 @@
+.file-upload {
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.file-upload h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.file-upload input[type="file"] {
+  display: block;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border: 2px dashed #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-upload input[type="file"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.file-upload .status {
+  color: #6C3BAA;
+  font-weight: 500;
+}
+
+.file-upload .error {
+  color: #dc3545;
+  background: #f8d7da;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}

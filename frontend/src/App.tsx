@@ -1,34 +1,58 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import FileUpload from './components/FileUpload'
+import DataTable from './components/DataTable'
+import { Charts } from './components/Charts'
+import type { ParsedData } from './types'
+import ConnectionStatus from './components/ConnectionStatus'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [parsedData, setParsedData] = useState<ParsedData | null>(null)
+
+  const handleDataParsed = (data: ParsedData) => {
+    setParsedData(data)
+  }
+
+  const handleReset = () => {
+    setParsedData(null)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app">
+      <header className="app-header">
+        <h1>📊 Excel Insights</h1>
+        <p>Lightweight Excel & CSV Analysis Tool</p>
+        <ConnectionStatus />
+      </header>
+
+      <main className="app-main">
+        {!parsedData ? (
+          <FileUpload onDataParsed={handleDataParsed} />
+        ) : (
+          <>
+            <div className="upload-success">
+              <div className="success-info">
+                <span className="success-icon">✅</span>
+                <div>
+                  <strong>{parsedData.filename}</strong>
+                  <span className="file-meta"> - {parsedData.rowCount} rows, {parsedData.columns.length} columns</span>
+                </div>
+              </div>
+              <button onClick={handleReset} className="btn-reset">
+                Upload New File
+              </button>
+            </div>
+
+            <DataTable parsedData={parsedData} />
+            <Charts data={parsedData} />
+          </>
+        )}
+      </main>
+
+      <footer className="app-footer">
+        <p>Built with React, TypeScript, and Recharts</p>
+      </footer>
+    </div>
   )
 }
 
