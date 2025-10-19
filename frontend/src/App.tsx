@@ -4,7 +4,6 @@ import FileUpload from './components/FileUpload'
 import DataTable from './components/DataTable'
 import { Charts } from './components/Charts'
 import type { ParsedData } from './types'
-import ConnectionStatus from './components/ConnectionStatus'
 
 function App() {
   const [parsedData, setParsedData] = useState<ParsedData | null>(null)
@@ -20,9 +19,8 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>📊 Excel Insights</h1>
+        <h1>Excel Insights</h1>
         <p>Lightweight Excel & CSV Analysis Tool</p>
-        <ConnectionStatus />
       </header>
 
       <main className="app-main">
@@ -32,7 +30,7 @@ function App() {
           <>
             <div className="upload-success">
               <div className="success-info">
-                <span className="success-icon">✅</span>
+                
                 <div>
                   <strong>{parsedData.filename}</strong>
                   <span className="file-meta"> - {parsedData.rowCount} rows, {parsedData.columns.length} columns</span>
