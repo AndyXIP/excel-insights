@@ -8,7 +8,7 @@ interface DataTableProps {
 
 export default function DataTable({ parsedData }: DataTableProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortColumn, setSortColumn] = useState<string | null>(parsedData.columns[0] || null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
 

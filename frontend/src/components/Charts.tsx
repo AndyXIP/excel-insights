@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useMemo, useState } from 'react';
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, ScatterChart, Scatter, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { ParsedData } from '../types';
 import './Charts.css';
 
@@ -10,6 +10,11 @@ interface ChartsProps {
 const COLORS = ['#6C3BAA', '#8B5BD9', '#A47CE5', '#BD9DF0', '#D6BEFB'];
 
 export function Charts({ data }: ChartsProps) {
+  const [selectedBarColumn, setSelectedBarColumn] = useState<string>('');
+  const [selectedPieColumn, setSelectedPieColumn] = useState<string>('');
+  const [selectedScatterX, setSelectedScatterX] = useState<string>('');
+  const [selectedScatterY, setSelectedScatterY] = useState<string>('');
+
   const analysis = useMemo(() => {
     const columns = data.columns;
     const rows = data.data;
@@ -54,12 +59,11 @@ export function Charts({ data }: ChartsProps) {
     });
 
     // Prepare data for charts
-    const barChartData = numericColumns.slice(0, 1).map((col: string) => {
-      return rows.slice(0, 10).map((row: Record<string, any>, idx: number) => ({
-        name: row[columns[0]] || `Row ${idx + 1}`,
-        value: Number(row[col]) || 0
-      }));
-    })[0] || [];
+    const barCol = selectedBarColumn || numericColumns[0];
+    const barChartData = barCol ? rows.slice(0, 10).map((row: Record<string, any>, idx: number) => ({
+      name: row[columns[0]] || `Row ${idx + 1}`,
+      value: Number(row[barCol]) || 0
+    })) : [];
 
     const lineChartData = numericColumns.length > 0 ? rows.slice(0, 20).map((row: Record<string, any>, idx: number) => {
       const point: any = { name: row[columns[0]] || `Row ${idx + 1}` };
@@ -69,18 +73,30 @@ export function Charts({ data }: ChartsProps) {
       return point;
     }) : [];
 
-    // Pie chart: aggregate first categorical column
+    // Pie chart: aggregate selected or first categorical column
+    const pieCol = selectedPieColumn || categoricalColumns[0];
     let pieChartData: Array<{ name: string; value: number }> = [];
-    if (categoricalColumns.length > 0) {
-      const catCol = categoricalColumns[0];
+    if (pieCol) {
       const counts: Record<string, number> = {};
       rows.forEach((row: Record<string, any>) => {
-        const val = String(row[catCol] || 'Unknown');
+        const val = String(row[pieCol] || 'Unknown');
         counts[val] = (counts[val] || 0) + 1;
       });
       pieChartData = Object.entries(counts)
         .slice(0, 5)
         .map(([name, value]) => ({ name, value }));
+    }
+
+    // Scatter chart: relationship between selected or first two numeric columns
+    const scatterX = selectedScatterX || numericColumns[0];
+    const scatterY = selectedScatterY || numericColumns[1];
+    let scatterChartData: Array<{ x: number; y: number; name: string }> = [];
+    if (scatterX && scatterY) {
+      scatterChartData = rows.slice(0, 50).map((row: Record<string, any>, idx: number) => ({
+        x: Number(row[scatterX]) || 0,
+        y: Number(row[scatterY]) || 0,
+        name: row[columns[0]] || `Point ${idx + 1}`
+      }));
     }
 
     return {
@@ -90,9 +106,14 @@ export function Charts({ data }: ChartsProps) {
       trends,
       barChartData,
       lineChartData,
-      pieChartData
+      pieChartData,
+      scatterChartData,
+      barCol,
+      pieCol,
+      scatterX,
+      scatterY
     };
-  }, [data]);
+  }, [data, selectedBarColumn, selectedPieColumn, selectedScatterX, selectedScatterY]);
 
   if (analysis.numericColumns.length === 0) {
     return (
@@ -133,7 +154,18 @@ export function Charts({ data }: ChartsProps) {
         {/* Bar Chart */}
         {analysis.barChartData.length > 0 && (
           <div className="chart-card">
-            <h4>{analysis.numericColumns[0]} - Bar Chart</h4>
+            <div className="chart-header">
+              <h4>Bar Chart</h4>
+              <select 
+                value={selectedBarColumn || analysis.barCol} 
+                onChange={(e) => setSelectedBarColumn(e.target.value)}
+                className="chart-selector"
+              >
+                {analysis.numericColumns.map((col: string) => (
+                  <option key={col} value={col}>{col}</option>
+                ))}
+              </select>
+            </div>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={analysis.barChartData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -174,7 +206,18 @@ export function Charts({ data }: ChartsProps) {
         {/* Pie Chart */}
         {analysis.pieChartData.length > 0 && (
           <div className="chart-card">
-            <h4>{analysis.categoricalColumns[0]} - Distribution</h4>
+            <div className="chart-header">
+              <h4>Distribution - Pie Chart</h4>
+              <select 
+                value={selectedPieColumn || analysis.pieCol} 
+                onChange={(e) => setSelectedPieColumn(e.target.value)}
+                className="chart-selector"
+              >
+                {analysis.categoricalColumns.map((col: string) => (
+                  <option key={col} value={col}>{col}</option>
+                ))}
+              </select>
+            </div>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -197,6 +240,49 @@ export function Charts({ data }: ChartsProps) {
                 </Pie>
                 <Tooltip />
               </PieChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
+        {/* Scatter Chart */}
+        {analysis.scatterChartData.length > 0 && (
+          <div className="chart-card">
+            <div className="chart-header">
+              <h4>Scatter Chart</h4>
+              <div className="scatter-selectors">
+                <select 
+                  value={selectedScatterX || analysis.scatterX} 
+                  onChange={(e) => setSelectedScatterX(e.target.value)}
+                  className="chart-selector"
+                >
+                  {analysis.numericColumns.map((col: string) => (
+                    <option key={col} value={col}>{col} (X)</option>
+                  ))}
+                </select>
+                <select 
+                  value={selectedScatterY || analysis.scatterY} 
+                  onChange={(e) => setSelectedScatterY(e.target.value)}
+                  className="chart-selector"
+                >
+                  {analysis.numericColumns.map((col: string) => (
+                    <option key={col} value={col}>{col} (Y)</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <ScatterChart>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="x" name={analysis.scatterX} />
+                <YAxis dataKey="y" name={analysis.scatterY} />
+                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                <Legend />
+                <Scatter 
+                  name="Data Points" 
+                  data={analysis.scatterChartData} 
+                  fill={COLORS[0]}
+                />
+              </ScatterChart>
             </ResponsiveContainer>
           </div>
         )}

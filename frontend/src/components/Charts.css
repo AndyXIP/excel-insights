@@ -29,6 +29,38 @@
   font-size: 1.1rem;
 }
 
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.chart-selector {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.chart-selector:focus {
+  outline: none;
+  border-color: #6C3BAA;
+  box-shadow: 0 0 0 2px rgba(108, 59, 170, 0.1);
+}
+
+.scatter-selectors {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .no-charts-message {
   text-align: center;
   padding: 3rem;
