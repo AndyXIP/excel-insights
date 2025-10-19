@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import FileUpload from './components/FileUpload'
 import DataTable from './components/DataTable'
-import { Charts } from './components/Charts'
+import { Charts } from './components/ChartsContainer'
 import ScrollToTop from './components/ScrollToTop'
 import type { ParsedData } from './types'
 

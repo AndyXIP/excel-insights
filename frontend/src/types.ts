@@ -1,4 +1,3 @@
-// frontend/src/types.ts
 export interface ParsedData {
   success: boolean;
   filename: string;
